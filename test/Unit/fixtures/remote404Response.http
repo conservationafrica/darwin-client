@@ -1,0 +1,13 @@
+HTTP/1.1 404 Not Found
+Date: Mon, 27 Nov 2023 11:45:59 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+Server: nginx/1.22.1
+X-Powered-By: PHP/7.4.33
+Set-Cookie: PHPSESSID=3lto2k2j545j9okejvkbfgt735; expires=Mon, 04-Dec-2023 11:45:59 GMT; Max-Age=604800; path=/
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+
+<html><head><title>Error 404: Page not found</title></head><body><h1>Page not found</h1><p>The page you requested was not found.</p></body></html>

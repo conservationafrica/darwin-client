@@ -1,0 +1,57 @@
+name: "Continuous Integration"
+
+on:
+  pull_request:
+  push:
+    branches:
+    tags:
+
+env:
+  php_extensions: ctype,curl,intl,json,libxml,mbstring
+  default_php: 8.2
+
+jobs:
+  matrix:
+    name: Generate job matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Gather CI configuration
+        id: matrix
+        uses: laminas/laminas-ci-matrix-action@v1
+
+  qa:
+    name: QA Checks
+    needs: [ matrix ]
+    runs-on: ${{ matrix.operatingSystem }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: ${{ matrix.name }}
+        uses: laminas/laminas-continuous-integration-action@v1
+        env:
+          "GITHUB_TOKEN": ${{ secrets.GITHUB_TOKEN }}
+        with:
+          job: ${{ matrix.job }}
+
+  composer-require-checker:
+    name: "Check for missing dependencies"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@2.26.0
+        with:
+          php-version: ${{ env.default_php }}
+          ini-values: memory_limit=-1
+          extensions: ${{ env.php_extensions }}
+      - uses: "ramsey/composer-install@2.2.0"
+      - run: composer global config bin-dir /usr/local/bin
+      - run: composer global require -W maglnet/composer-require-checker
+      - run: /usr/local/bin/composer-require-checker check

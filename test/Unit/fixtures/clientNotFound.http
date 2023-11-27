@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Date: Wed, 22 Nov 2023 10:41:58 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Server: nginx/1.22.1
+X-Powered-By: PHP/7.4.33
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: *
+
+{"Code":404,"Result":"Fail","Msg":"Client not found.","SQL":"SELECT a.*,\n    ( select count(*) from modx_ettrip where clientid = a.id ) as numberofenquiries,\n    ( select description from modx_ettrip where clientid = a.id order by createdon desc limit 1) as latestenquirydescription,\n    ( select date_format(createdon, '%d\/%m\/%Y') from modx_ettrip where clientid = a.id order by createdon desc limit 1) as latestenquirydate,\n    ( select count(*) from modx_etquote where tripid in (\n        select id from modx_ettrip where clientid = a.id ) ) as numberofquotes,\n    ( select count(*) from modx_etreservation where tripid in (\n        select id from modx_ettrip where clientid = a.id ) ) as numberofreservations, isblockfromconcierge,\n    ( select ba.id from modx_etbusinessaccount ba where ba.accountname = a.clientcompanyname ) as businessaccountid\n    FROM   modx_etclient a\n    WHERE  a.companyid = 63 AND    email = 'email-655ddaf6ad163@example.com'"}

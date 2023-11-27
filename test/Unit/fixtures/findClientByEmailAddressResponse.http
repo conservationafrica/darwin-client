@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Date: Wed, 22 Nov 2023 10:09:15 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Server: nginx/1.22.1
+X-Powered-By: PHP/7.4.33
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: *
+
+{"Code":200,"Result":"Success","Client":{"clientid":"478564","title":"","firstname":"Diet & Medical","initials":"","lastname":"Test","maidenname":"","sex":"","isdeceased":"0","housenamenumber":"","address1":"","address2":"","address3":"","town":"","county":"","postcode":"","country":"","homephone":"","workphone":"","mobilephone":"","email":"no-diet@example.com","secondaryemail":"","skype":"","facebook":"","passportcountry":"","dateofbirth":"1970-01-01","allowmailing":"0","allowemail":"0","overseas":"0","blacklisted":"0","clientnotes":"","enquirynotes":"","createdon":"2023-11-21 16:27:50","editedon":"2023-11-21 16:27:50","externalref":"","requestedbrochure":"0","customertype":null,"numberofenquiries":"0","numberofquotes":"0","numberofreservations":"0","latestenquirydescription":null,"latestenquirydate":null,"isblockfromconcierge":"0","businessaccountid":null,"quotes":[],"reservations":[],"invoices":[]}}
