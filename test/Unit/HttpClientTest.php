@@ -176,4 +176,28 @@ class HttpClientTest extends TestCase
         $id = $this->client->createOrUpdateClientWithEmailAddress('foo@example.com', []);
         self::assertSame(478567, $id);
     }
+
+    public function test500ResponseWithCreateEnquiry(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/remoteErrorWithCreateEnquiry.http');
+        $this->expectException(RequestFailed::class);
+        $this->expectExceptionMessage('failed with message "Error encountered saving tripenquiry record"');
+        $this->client->createEnquiry(123456, []);
+    }
+
+    public function testCreateEnquiryIsExceptionalForAnUnexpectedResponseShape(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/genericSuccessResponse.http');
+        $this->expectException(UnexpectedAPIPayload::class);
+        $this->expectExceptionMessage('The `createEnquiry` response payload should contain a trip identifier');
+        $this->client->createEnquiry(123456, []);
+    }
+
+    public function testCreateEnquiryCanBeSuccessful(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/createEnquirySuccess.http');
+        $enquiryId = $this->client->createEnquiry(123456, []);
+
+        self::assertSame(298819, $enquiryId);
+    }
 }

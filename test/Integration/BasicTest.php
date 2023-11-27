@@ -298,4 +298,97 @@ class BasicTest extends TestCase
 
         return $id;
     }
+
+    #[Depends('testCreateClient')]
+    public function testThatAnEnquiryCanBeCreatedWithMinimumInformation(): void
+    {
+        $client = $this->client->findClientByEmailAddress('me@example.com');
+
+        $enquiryId = $this->client->createEnquiry($client->id, []);
+
+        self::assertGreaterThan(0, $enquiryId);
+        self::serialiseClientExchange($this->client, 'minimalEnquiry');
+    }
+
+    public function testThatAnErrorDoesNotOccurWhenProvidingInvalidValuesToCreateEnquiry(): void
+    {
+        $client = $this->client->findClientByEmailAddress('me@example.com');
+
+        $enquiryId = $this->tryClientMethod(function () use ($client): int {
+            return $this->client->createEnquiry($client->id, [
+                'unknown' => 'whatever',
+                'invalid-key' => 'baz',
+            ]);
+        }, __FUNCTION__);
+
+        self::assertGreaterThan(0, $enquiryId);
+        self::serialiseClientExchange($this->client, 'invalidEnquiry');
+    }
+
+    public function testDetailedCreateEnquiryPayloadForManualInspection(): void
+    {
+        $client = $this->client->findClientByEmailAddress('me@example.com');
+
+        $enquiryId = $this->tryClientMethod(function () use ($client): int {
+            return $this->client->createEnquiry($client->id, [
+                'description' => 'An example description',
+                'notes' => '<h1>Note can be arbitrary Markup</h1><p><em>Ooohh!</em></p>',
+                'dateoftravel' => 'Next week',
+                //'countryofinterest1' => 'We have no hope of knowing what this value could be',
+                //'countryofinterest2' => 'Country 2',
+                //'countryofinterest3' => 'Country 3',
+                //'countryofinterest4' => 'Country 4',
+                //'countryofinterest5' => 'Country 5',
+                //'othercountry' => 'And yet another country',
+                'nights' => 4265923,
+                'adults' => 496,
+                'children' => 99,
+                'numberofsinglepax' => 123,
+                'childages' => 'Too many to list',
+                'rooms' => 465,
+                'roomtype' => 'Room type? Who knows?',
+                'channel' => 'Some Channel',
+                'createdby' => 348,
+                'originatingsource' => 0,
+                'triptype' => 'Some type of trip',
+                'weblevelofinterest' => 'Interest much',
+                'region' => 'Region Name',
+                'duration' => '12 months',
+                'brochurecode' => 'Some brochure code?',
+                'assigneeoverride' => 333,
+                'bookingstartdate' => '2023-12-25',
+                'isbooking' => 0,
+                'agentid' => null,
+                'pax' => [
+                    [
+                        'firstname' => 'Theresa',
+                        'lastname' => 'May',
+                        'passportcountry' => 'Rwanda',
+                        'dateofbirth' => '1945-01-01',
+                        'passportnumber' => '01234567890',
+                        'nationality' => 'Scum',
+                    ],
+                    [
+                        'firstname' => 'Boris',
+                        'lastname' => 'Jhonson',
+                        'passportcountry' => 'Rwanda',
+                        'dateofbirth' => '1969-01-01',
+                        'passportnumber' => '01234567890',
+                        'nationality' => 'Scum',
+                    ],
+                ],
+                'emergencycontacts' => [
+                    [
+                        'emergencycontactname' => 'Mupet Face',
+                        'emergencycontactphone' => 'Mupet Face',
+                        'emergencycontactemail' => 'Mupet Face',
+                        'emergencycontactrelationship' => 'Mupet Face',
+                    ],
+                ],
+            ]);
+        }, __FUNCTION__);
+
+        self::assertGreaterThan(0, $enquiryId);
+        self::serialiseClientExchange($this->client, 'invalidEnquiry');
+    }
 }

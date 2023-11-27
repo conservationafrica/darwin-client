@@ -121,4 +121,7 @@ interface Client
 
     /** @return list<Country> */
     public function listCountries(): array;
+
+    /** @param EnquiryPayload $payload */
+    public function createEnquiry(int $clientId, array $payload): int;
 }
