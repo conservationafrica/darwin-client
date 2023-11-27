@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Date: Mon, 27 Nov 2023 13:16:46 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Server: nginx/1.22.1
+X-Powered-By: PHP/7.4.33
+Set-Cookie: PHPSESSID=f5djagld25hddt9bpsfmgfo2he; expires=Mon, 04-Dec-2023 13:16:46 GMT; Max-Age=604800; path=/
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: *
+
+
+{"Code":500,"Result":"Fail","Msg":"Error encountered saving tripenquiry record"}

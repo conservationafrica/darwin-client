@@ -165,6 +165,30 @@ final class HttpClient implements Client
         return (int) $payload['clientid'];
     }
 
+    /** @inheritDoc */
+    public function createEnquiry(int $clientId, array $payload): int
+    {
+        $payload['clientid'] = $clientId;
+        $request = $this->createRequest(
+            'POST',
+            'createTripEnquiry',
+            'tripenquiry',
+            $payload,
+        );
+
+        $payload = $this->sendRequest($request);
+        if (! isset($payload['tripid']) || ! is_numeric($payload['tripid'])) {
+            throw new UnexpectedAPIPayload(
+                $request,
+                T\instance_of(ResponseInterface::class)->assert($this->lastResponse),
+                'The `createEnquiry` response payload should contain a trip identifier in the field '
+                . '`tripid` but none was found',
+            );
+        }
+
+        return (int) $payload['tripid'];
+    }
+
     /** @return array<string, mixed> */
     private function sendRequest(RequestInterface $request): array
     {

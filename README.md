@@ -55,3 +55,9 @@ Docs state that the value must be "Email" or "Telephone", but you can provide an
 ### `getCountryList` method
 
 This endpoint is useless for identifying countries relevant to customers. It will only return a handful of countries - those that are defined by the customer.
+
+### `createEnquiry` method
+
+Generally speaking, you can send any old junk with this method, providing you observe the spec outlined on the `ClientInterface::EnquiryPayload` psalm type.
+
+The 6 'Country of Interest' fields must correspond to a country identifier which is not particularly helpful, _(An ISO country code might have been a more sensible choice here)_. Not providing a valid identifier is guaranteed to resolve to a 500 error.
