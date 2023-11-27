@@ -19,9 +19,10 @@ Things to watch out for:
 There are 2 test suites, `Integration` and `Unit`
 
 To run the integration tests on a remote server, you'll need to declare the environment variables:
- - `API_URL` - This is scheme and host only, i.e. "https://example.com" - the default base path of `/AJAX/` is hard-coded in the test suite.
- - `API_SECRET` - This is the shared secret used to generate `hash_hmac` signatures required by Darwin.
- - `COMPANY_ID` - The integer company ID provided by Darwin.
+
+- `API_URL` - This is scheme and host only, i.e. "https://example.com" - the default base path of `/AJAX/` is hard-coded in the test suite.
+- `API_SECRET` - This is the shared secret used to generate `hash_hmac` signatures required by Darwin.
+- `COMPANY_ID` - The integer company ID provided by Darwin.
 
 ## Method Details and Caveats
 
@@ -42,14 +43,14 @@ As noted, this method is an upsert, however, **any omitted fields will erase exi
 
 Docs state that the value must be "Email" or "Telephone", but you can provide an integer to the `preferredcontactmethod` field that matches one of the following:
 
-* 1 = Primary Email
-* 2 = Secondary Email
-* 3 = Home Phone
-* 4 = Work Phone
-* 5 = Mobile Phone
-* 6 = Skype
-* 7 = Facebook
-* 8 = Post
+- 1 = Primary Email
+- 2 = Secondary Email
+- 3 = Home Phone
+- 4 = Work Phone
+- 5 = Mobile Phone
+- 6 = Skype
+- 7 = Facebook
+- 8 = Post
 
 ### `getCountryList` method
 
