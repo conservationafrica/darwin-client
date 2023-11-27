@@ -69,8 +69,8 @@ use Darwin\Models\Country;
  *     assigneeoverride?: int,
  *     bookingstartdate?: non-empty-string,
  *     isbooking?: 1|0,
- *     agentid?: int,
- *     pax: list<array{
+ *     agentid?: int|null,
+ *     pax?: list<array{
  *         firstname?: non-empty-string,
  *         lastname?: non-empty-string,
  *         title?: non-empty-string,
@@ -93,7 +93,7 @@ use Darwin\Models\Country;
  *          insurancepolicynumber?: non-empty-string,
  *          insurance24hrcontact?: non-empty-string,
  *      }>,
- * }
+ * }&array<string, mixed>
  */
 interface Client
 {

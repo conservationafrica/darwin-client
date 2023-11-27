@@ -6,6 +6,7 @@ namespace Darwin\Test\Integration;
 
 use Darwin\DarwinError;
 use Darwin\HttpClient;
+use Darwin\Models\Client as ClientModel;
 use Darwin\Models\Client as DarwinClient;
 use Darwin\Models\Country;
 use Darwin\RequestFailed;
@@ -24,6 +25,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+use function assert;
 use function file_put_contents;
 use function sprintf;
 use function uniqid;
@@ -303,6 +305,7 @@ class BasicTest extends TestCase
     public function testThatAnEnquiryCanBeCreatedWithMinimumInformation(): void
     {
         $client = $this->client->findClientByEmailAddress('me@example.com');
+        assert($client instanceof ClientModel);
 
         $enquiryId = $this->client->createEnquiry($client->id, []);
 
@@ -315,6 +318,8 @@ class BasicTest extends TestCase
         $client = $this->client->findClientByEmailAddress('me@example.com');
 
         $enquiryId = $this->tryClientMethod(function () use ($client): int {
+            assert($client instanceof ClientModel);
+
             return $this->client->createEnquiry($client->id, [
                 'unknown' => 'whatever',
                 'invalid-key' => 'baz',
@@ -330,6 +335,8 @@ class BasicTest extends TestCase
         $client = $this->client->findClientByEmailAddress('me@example.com');
 
         $enquiryId = $this->tryClientMethod(function () use ($client): int {
+            assert($client instanceof ClientModel);
+
             return $this->client->createEnquiry($client->id, [
                 'description' => 'An example description',
                 'notes' => '<h1>Note can be arbitrary Markup</h1><p><em>Ooohh!</em></p>',
