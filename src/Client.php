@@ -6,6 +6,7 @@ namespace Darwin;
 
 use Darwin\Models\Client as ClientModel;
 use Darwin\Models\Country;
+use Darwin\Models\MarketingSource;
 
 /**
  * @psalm-type ClientPayload = array{
@@ -124,4 +125,7 @@ interface Client
 
     /** @param EnquiryPayload $payload */
     public function createEnquiry(int $clientId, array $payload): int;
+
+    /** @return list<MarketingSource> */
+    public function getMarketingSourceCodes(): array;
 }

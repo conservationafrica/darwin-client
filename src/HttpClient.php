@@ -6,6 +6,7 @@ namespace Darwin;
 
 use Darwin\Models\Client as ClientModel;
 use Darwin\Models\Country;
+use Darwin\Models\MarketingSource;
 use Psl\Type as T;
 use Psr\Clock\ClockInterface;
 use Psr\Http\Client\ClientInterface;
@@ -187,6 +188,60 @@ final class HttpClient implements Client
         }
 
         return (int) $payload['tripid'];
+    }
+
+    /** @inheritDoc */
+    public function getMarketingSourceCodes(): array
+    {
+        $request = $this->createRequest(
+            'POST',
+            'getMarketingSourceCodes',
+            null,
+            null,
+        );
+        $payload = $this->sendRequest($request);
+
+        $list = $payload['SourceList'] ?? null;
+        if (! is_array($list)) {
+            throw new UnexpectedAPIPayload(
+                $request,
+                T\instance_of(ResponseInterface::class)->assert($this->lastResponse),
+                'The marketing source codes list should contain a top-level key of `SourceList`',
+            );
+        }
+
+        $type = T\shape([
+            'id' => T\positive_int(),
+            'subsource' => T\string(),
+            'sourcecatid' => T\positive_int(),
+            'sourcecat' => T\non_empty_string(),
+            'isactive' => T\union(T\literal_scalar(1), T\literal_scalar(0)),
+            'ispublic' => T\union(T\literal_scalar(1), T\literal_scalar(0)),
+        ], true);
+
+        $data = [];
+        foreach ($list as $item) {
+            if (! is_array($item)) {
+                throw new UnexpectedAPIPayload(
+                    $request,
+                    T\instance_of(ResponseInterface::class)->assert($this->lastResponse),
+                    'The list of marketing source codes contained a non-array member',
+                );
+            }
+
+            $value = $type->coerce($item);
+
+            $data[] = new MarketingSource(
+                $value['id'],
+                $value['subsource'],
+                $value['sourcecatid'],
+                $value['sourcecat'],
+                $value['isactive'] === 1,
+                $value['ispublic'] === 1,
+            );
+        }
+
+        return $data;
     }
 
     /** @return array<string, mixed> */
