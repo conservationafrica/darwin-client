@@ -104,8 +104,8 @@ interface Client
      * There is currently no way of supplying an email address and using the data to actually create a new client if
      * that email address is already in use, therefore, this operation should be considered destructive.
      *
-     * The email address does not have to be valid - you can literally provide any non-empty string and the API will
-     * accept it. At least this feature will allow some uniqueness to each client payload, for example the email could
+     * The email address does not have to be valid - you can literally provide any non-empty string, and the API will
+     * accept it. At least this feature will allow some uniqueness to each client payload; for example, the email could
      * be replaced with a UUID that links to another system of record for actually storing the relevant information.
      *
      * Any field not present is written as a NULL in the remote server. This means that if you do an insert with
@@ -114,18 +114,46 @@ interface Client
      *
      * @param non-empty-string $emailAddress
      * @param ClientPayload    $clientData
+     *
+     * @throws RequestFailed If an error occurs executing the request.
+     * @throws UnexpectedAPIPayload If the remote server response is erroneous.
      */
     public function createOrUpdateClientWithEmailAddress(string $emailAddress, array $clientData): int;
 
-    /** @param non-empty-string $emailAddress */
+    /**
+     * Retrieve client information by searching by email address
+     *
+     * This method returns the _most recently inserted_ client when there are multiple clients sharing the same email
+     * address, it is therefore not possible to use this method to retrieve an "old" client.
+     *
+     * @param non-empty-string $emailAddress
+     *
+     * @throws RequestFailed If an error occurs executing the request.
+     * @throws UnexpectedAPIPayload If the remote server response is erroneous.
+     */
     public function findClientByEmailAddress(string $emailAddress): ClientModel|null;
 
-    /** @return list<Country> */
+    /**
+     * @return list<Country>
+     *
+     * @throws RequestFailed If an error occurs executing the request.
+     * @throws UnexpectedAPIPayload If the remote server response is erroneous.
+     */
     public function listCountries(): array;
 
-    /** @param EnquiryPayload $payload */
+    /**
+     * @param EnquiryPayload $payload
+     *
+     * @throws RequestFailed If an error occurs executing the request.
+     * @throws UnexpectedAPIPayload If the remote server response is erroneous.
+     */
     public function createEnquiry(int $clientId, array $payload): int;
 
-    /** @return list<MarketingSource> */
+    /**
+     * @return list<MarketingSource>
+     *
+     * @throws RequestFailed If an error occurs executing the request.
+     * @throws UnexpectedAPIPayload If the remote server response is erroneous.
+     */
     public function getMarketingSourceCodes(): array;
 }
