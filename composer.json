@@ -12,6 +12,9 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": false
+        },
+        "platform": {
+            "php": "8.2.99"
         }
     },
     "require": {
@@ -35,7 +38,7 @@
         "lcobucci/clock": "^3.2",
         "php-standard-library/psalm-plugin": "^2.3.0",
         "php-http/mock-client": "^1.6",
-        "maglnet/composer-require-checker": "^4.7"
+        "maglnet/composer-require-checker": "^4.7.1"
     },
     "autoload": {
         "psr-4": {
