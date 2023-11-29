@@ -7,6 +7,7 @@ namespace Darwin\Test\Unit;
 use Darwin\HttpClient;
 use Darwin\Models\Client;
 use Darwin\Models\Country;
+use Darwin\Models\MarketingSource;
 use Darwin\RequestFailed;
 use Darwin\UnexpectedAPIPayload;
 use DateTimeZone;
@@ -19,9 +20,12 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+use function assert;
 use function count;
+use function end;
 use function file_get_contents;
 use function json_decode;
+use function reset;
 
 class HttpClientTest extends TestCase
 {
@@ -199,5 +203,49 @@ class HttpClientTest extends TestCase
         $enquiryId = $this->client->createEnquiry(123456, []);
 
         self::assertSame(298819, $enquiryId);
+    }
+
+    public function testMarketingSourceCodesAreRetrieved(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/marketingSourceCodes.http');
+        $list = $this->client->getMarketingSourceCodes();
+
+        self::assertCount(2, $list);
+
+        $last = end($list);
+        $first = reset($list);
+
+        assert($first instanceof MarketingSource);
+        assert($last instanceof MarketingSource);
+
+        self::assertSame(1, $first->sourceId);
+        self::assertSame(2, $first->categoryId);
+        self::assertSame('Foo', $first->name);
+        self::assertSame('Some Category', $first->categoryName);
+        self::assertTrue($first->isActive);
+        self::assertTrue($first->isPublic);
+
+        self::assertSame(3, $last->sourceId);
+        self::assertSame(2, $last->categoryId);
+        self::assertSame('Bar', $last->name);
+        self::assertSame('Some Category', $last->categoryName);
+        self::assertTrue($last->isActive);
+        self::assertFalse($last->isPublic);
+    }
+
+    public function testMarketingSourcesAreExceptionalForAnUnexpectedResponseShape(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/genericSuccessResponse.http');
+        $this->expectException(UnexpectedAPIPayload::class);
+        $this->expectExceptionMessage('The marketing source codes list should contain a top-level key of `SourceList`');
+        $this->client->getMarketingSourceCodes();
+    }
+
+    public function testMarketingSourcesAreExceptionalForInvalidMemberShape(): void
+    {
+        $this->fixResponse(__DIR__ . '/fixtures/marketingSourceCodesInvalidPayload.http');
+        $this->expectException(UnexpectedAPIPayload::class);
+        $this->expectExceptionMessage('The list of marketing source codes contained a non-array member');
+        $this->client->getMarketingSourceCodes();
     }
 }

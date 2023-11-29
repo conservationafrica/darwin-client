@@ -9,6 +9,7 @@ use Darwin\HttpClient;
 use Darwin\Models\Client as ClientModel;
 use Darwin\Models\Client as DarwinClient;
 use Darwin\Models\Country;
+use Darwin\Models\MarketingSource;
 use Darwin\RequestFailed;
 use Darwin\UnexpectedAPIPayload;
 use DateTimeZone;
@@ -26,6 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 use function assert;
+use function count;
 use function file_put_contents;
 use function sprintf;
 use function uniqid;
@@ -397,5 +399,13 @@ class BasicTest extends TestCase
 
         self::assertGreaterThan(0, $enquiryId);
         self::serialiseClientExchange($this->client, 'invalidEnquiry');
+    }
+
+    public function testThatMarketingSourceCodesCanBeRetrieved(): void
+    {
+        $list = $this->client->getMarketingSourceCodes();
+        self::assertGreaterThan(0, count($list));
+        self::assertContainsOnlyInstancesOf(MarketingSource::class, $list);
+        self::serialiseClientExchange($this->client, 'marketingSourceCodes');
     }
 }
