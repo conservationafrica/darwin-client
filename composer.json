@@ -33,8 +33,9 @@
         "php-http/curl-client": "^2.3.1",
         "laminas/laminas-diactoros": "^3.3",
         "lcobucci/clock": "^3.2",
-        "php-standard-library/psalm-plugin": "^2.2.1",
-        "php-http/mock-client": "^1.6"
+        "php-standard-library/psalm-plugin": "^2.3.0",
+        "php-http/mock-client": "^1.6",
+        "maglnet/composer-require-checker": "^4.7"
     },
     "autoload": {
         "psr-4": {
