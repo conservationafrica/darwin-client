@@ -1,1 +1,14 @@
 *.http text eol=crlf
+
+.github export-ignore
+test export-ignore
+var export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.laminas-ci.json export-ignore
+composer.lock export-ignore
+Makefile export-ignore
+phpcs.xml export-ignore
+phpunit.xml export-ignore
+psalm.xml export-ignore
+renovate.json export-ignore
