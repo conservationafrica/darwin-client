@@ -53,5 +53,5 @@ jobs:
           php-version: ${{ env.default_php }}
           ini-values: memory_limit=-1
           extensions: ${{ env.php_extensions }}
-      - uses: "ramsey/composer-install@2.2.0"
+      - uses: "ramsey/composer-install@3.0.0"
       - run: vendor/bin/composer-require-checker check
